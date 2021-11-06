@@ -52,15 +52,32 @@ export default Vue.extend({
         .filter((k: number) => {
           return this.selected[k];
         });
+
       this.registerFilter({
         k: this.filterKey,
         f: new IntersectionFilter(selectedIds, this.property),
       });
     },
   },
-  // When the component is mounted we set all the labels as selected.
+  // When the component is mounted we set all the labels as unselected
+  // and then set those specified in the query string as selected
   mounted: function () {
     this.selected = fromPairs(keys(this.allLabels).map((k) => [k, false]));
+
+    const searchParams = new URL(window.location.href).searchParams;
+    if(searchParams.has(this.property)) {
+      const selectedIds = searchParams.get(this.property)
+        .split(",")
+        .map(id => parseInt(id, 10))
+        .filter(id => !isNaN(id));
+
+      selectedIds.forEach(id => this.selected[id] = true);
+
+      this.registerFilter({
+        k: this.filterKey,
+        f: new IntersectionFilter(selectedIds, this.property),
+      });
+    }
   },
 });
 </script>
