@@ -47,11 +47,20 @@ export default Vue.extend({
     toggle(key: number) {
       this.selected[key] = !this.selected[key];
 
-      const selectedIds = keys(this.selected)
+      const selectedIds: number[] = keys(this.selected)
         .map(Number)
         .filter((k: number) => {
           return this.selected[k];
         });
+
+      const url = new URL(window.location.href);
+      if(selectedIds.length > 0) {
+        url.searchParams.set(this.property, selectedIds.join(","));
+      } else {
+        url.searchParams.delete(this.property);
+      }
+      const urlStr = window.decodeURIComponent(url.toString()); // Replaces '%2C' sequences with commas
+      window.history.replaceState(null, null, urlStr);
 
       this.registerFilter({
         k: this.filterKey,
