@@ -15,7 +15,10 @@
             
             <div class="dropdown-menu" aria-labelledby="semester-dropdown">
                 {% for semester in all_semesters %}
-                <a class="dropdown-item" href={% url 'courses-semester' semester.pk %}>{{ semester }}</a>
+                    <a class="dropdown-item"
+                       onclick="window.location.href=`{% url 'courses-semester' semester.pk %}`+window.location.search">
+                        {{ semester }}
+                    </a>
                 {% endfor %}
             </div>
         </div>
