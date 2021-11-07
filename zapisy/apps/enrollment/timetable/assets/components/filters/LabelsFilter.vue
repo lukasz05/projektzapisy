@@ -54,13 +54,13 @@ export default Vue.extend({
         });
 
       const url = new URL(window.location.href);
-      if(selectedIds.length > 0) {
+      if (selectedIds.length > 0) {
         url.searchParams.set(this.property, selectedIds.join(","));
       } else {
         url.searchParams.delete(this.property);
       }
       const urlStr = window.decodeURIComponent(url.toString()); // Replaces '%2C' sequences with commas
-      window.history.replaceState(null, null, urlStr);
+      window.history.replaceState(null, "", urlStr);
 
       this.registerFilter({
         k: this.filterKey,
@@ -74,13 +74,14 @@ export default Vue.extend({
     this.selected = fromPairs(keys(this.allLabels).map((k) => [k, false]));
 
     const searchParams = new URL(window.location.href).searchParams;
-    if(searchParams.has(this.property)) {
-      const selectedIds = searchParams.get(this.property)
+    if (searchParams.has(this.property)) {
+      const selectedIds = searchParams
+        .get(this.property)!
         .split(",")
-        .map(id => parseInt(id, 10))
-        .filter(id => !isNaN(id));
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id));
 
-      selectedIds.forEach(id => this.selected[id] = true);
+      selectedIds.forEach((id) => (this.selected[id] = true));
 
       this.registerFilter({
         k: this.filterKey,
