@@ -70,7 +70,7 @@ export default Vue.extend({
     },
   },
   // When the component is mounted we set all the labels as unselected
-  // and then set those specified in the query string as selected
+  // and then set those specified in the query string as selected.
   mounted: function () {
     this.selected = fromPairs(keys(this.allLabels).map((k) => [k, false]));
 

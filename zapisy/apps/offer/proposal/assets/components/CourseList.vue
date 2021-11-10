@@ -22,7 +22,7 @@ export default Vue.extend({
   },
   mounted() {
     // When mounted, load the list of courses from embedded JSON and apply initial filters
-    // fetched from the query string
+    // fetched from the query string.
     const courseData = JSON.parse(
       document.getElementById("courses-data")!.innerHTML
     ) as ProposalInfo[];
