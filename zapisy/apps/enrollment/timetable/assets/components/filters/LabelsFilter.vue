@@ -69,9 +69,9 @@ export default Vue.extend({
       });
     },
   },
-  // When the component is mounted we set all the labels as unselected
+  // When the component is created we set all the labels as unselected
   // and then set those specified in the query string as selected.
-  mounted: function () {
+  created: function () {
     this.selected = fromPairs(keys(this.allLabels).map((k) => [k, false]));
 
     const searchParams = new URL(window.location.href).searchParams;
