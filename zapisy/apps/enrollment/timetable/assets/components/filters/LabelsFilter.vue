@@ -47,20 +47,48 @@ export default Vue.extend({
     toggle(key: number) {
       this.selected[key] = !this.selected[key];
 
-      const selectedIds = keys(this.selected)
+      const selectedIds: number[] = keys(this.selected)
         .map(Number)
         .filter((k: number) => {
           return this.selected[k];
         });
+
+      const url = new URL(window.location.href);
+      if (selectedIds.length > 0) {
+        url.searchParams.set(this.property, selectedIds.join(","));
+      } else {
+        url.searchParams.delete(this.property);
+      }
+      url.search = window.decodeURIComponent(url.search); // Commas are ill-handled by URL/URLSearchParams class
+      const urlStr = url.toString();
+      window.history.replaceState(null, "", urlStr);
+
       this.registerFilter({
         k: this.filterKey,
         f: new IntersectionFilter(selectedIds, this.property),
       });
     },
   },
-  // When the component is mounted we set all the labels as selected.
-  mounted: function () {
+  // When the component is created we set all the labels as unselected
+  // and then set those specified in the query string as selected.
+  created: function () {
     this.selected = fromPairs(keys(this.allLabels).map((k) => [k, false]));
+
+    const searchParams = new URL(window.location.href).searchParams;
+    if (searchParams.has(this.property)) {
+      const selectedIds = searchParams
+        .get(this.property)!
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id));
+
+      selectedIds.forEach((id) => (this.selected[id] = true));
+
+      this.registerFilter({
+        k: this.filterKey,
+        f: new IntersectionFilter(selectedIds, this.property),
+      });
+    }
   },
 });
 </script>
