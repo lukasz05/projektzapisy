@@ -48,7 +48,7 @@ export default Vue.extend({
       "recommendedForFirstYear",
     ];
     const searchParams = new URL(window.location.href).searchParams;
-    // Expand the filters if there are any initially specified in the search params
+    // Expand the filters if there are any initially specified in the search params.
     if (filterableProperties.some((p: string) => searchParams.has(p))) {
       this.collapsed = false;
     }
