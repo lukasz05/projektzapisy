@@ -59,9 +59,7 @@ export default Vue.extend({
       } else {
         url.searchParams.delete(this.property);
       }
-      url.search = window.decodeURIComponent(url.search); // Commas are ill-handled by URL/URLSearchParams class
-      const urlStr = url.toString();
-      window.history.replaceState(null, "", urlStr);
+      window.history.replaceState(null, "", url.toString());
 
       this.registerFilter({
         k: this.filterKey,
