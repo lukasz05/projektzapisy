@@ -38,6 +38,20 @@ export default Vue.extend({
       return [Number(k), `${a} ${b}`] as [number, string];
     });
     this.allTypes = toPairs(filtersData.allTypes);
+
+    const filterableProperties = [
+      "name",
+      "tags",
+      "courseType",
+      "effects",
+      "owner",
+      "recommendedForFirstYear",
+    ];
+    const searchParams = new URL(window.location.href).searchParams;
+    // Expand the filters if there are any initially specified in the search params
+    if (filterableProperties.some((p: string) => searchParams.has(p))) {
+      this.collapsed = false;
+    }
   },
 });
 </script>
