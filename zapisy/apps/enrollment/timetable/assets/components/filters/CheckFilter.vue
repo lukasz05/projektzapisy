@@ -32,11 +32,30 @@ export default Vue.extend({
       on: false,
     };
   },
+  created: function () {
+    const searchParams = new URL(window.location.href).searchParams;
+
+    if (searchParams.has(this.property)) {
+      // Set `on` from URL only if respective key is in search params...
+      if (searchParams.get(this.property) === "true") {
+        // and it's value is `true`.
+        this.$data.on = true;
+      }
+    }
+  },
   methods: {
     ...mapMutations("filters", ["registerFilter"]),
   },
   watch: {
     on: function (newOn: boolean) {
+      const url = new URL(window.location.href);
+      if (newOn) {
+        url.searchParams.set(this.property, newOn.toString());
+      } else {
+        url.searchParams.delete(this.property);
+      }
+      window.history.replaceState(null, "", url.toString());
+
       this.registerFilter({
         k: this.filterKey,
         f: new BooleanFilter(newOn, this.property),
