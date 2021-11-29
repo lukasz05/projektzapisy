@@ -36,12 +36,18 @@ export default Vue.extend({
     const searchParams = new URL(window.location.href).searchParams;
 
     if (searchParams.has(this.property)) {
-      // Set `on` from URL only if respective key is in search params...
       if (searchParams.get(this.property) === "true") {
-        // and it's value is `true`.
-        this.$data.on = true;
+        this.on = true;
       }
     }
+
+    this.$store.subscribe((mutation, _) => {
+      switch (mutation.type) {
+        case "filters/clearFilters":
+          this.on = false;
+          break;
+      }
+    });
   },
   methods: {
     ...mapMutations("filters", ["registerFilter"]),
