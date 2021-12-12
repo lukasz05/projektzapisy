@@ -40,7 +40,7 @@ export default Vue.extend({
     });
     this.allTypes = toPairs(filtersData.allTypes);
   },
-  mounted: function() {
+  mounted: function () {
     // Extract filterable properties names from the template.
     const filterableProperties = Object.values(this.$refs)
       .filter((ref: any) => ref.filterKey)

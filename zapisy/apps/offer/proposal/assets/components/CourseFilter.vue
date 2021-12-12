@@ -52,7 +52,7 @@ export default Vue.extend({
       ["WITHDRAWN", "wycofany z oferty"],
     ];
   },
-  mounted: function() {
+  mounted: function () {
     // Extract filterable properties names from the template.
     const filterableProperties = Object.values(this.$refs)
       .filter((ref: any) => ref.filterKey)
